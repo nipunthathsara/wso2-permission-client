@@ -51,6 +51,7 @@ public class DTOPopulator {
      * @throws IOException
      */
     public DTOPopulator(Properties configs) throws IOException {
+        this.configs = configs;
         // Read CSV file.
         FileReader fileReader = null;
         log.info("reading permissions csv file.");
@@ -79,7 +80,7 @@ public class DTOPopulator {
             for (int i = 0; i < csvRecords.size(); i++) {
                 CSVRecord record = csvRecords.get(i);
                 // In order to be a valid record, should have 2 columns, a non empty property value. Numerical collection name.
-                if (record.size() != 2 || record.get(0).isEmpty() || NumberUtils.isNumber(record.get(1))) {
+                if (record.size() != 2 || record.get(0).isEmpty() || !NumberUtils.isNumber(record.get(1).trim())) {
                     log.info("Skipping record due to invalid format : " + record.toString());
                     continue;
                 }
@@ -88,6 +89,7 @@ public class DTOPopulator {
                 // Set collection attributes.
                 permission.setCollectionName(record.get(1));
                 permission.setCollectionDescription(null);
+                permission.setCollectionMediaType("");
                 permission.setCollectionParentPath(configs.getProperty(Constants.REGISTRY_PARENT_PATH));
 
                 // Set property attributes.

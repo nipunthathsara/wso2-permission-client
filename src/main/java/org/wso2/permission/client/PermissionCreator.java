@@ -56,7 +56,7 @@ public class PermissionCreator {
             log.info("Creating resource admin service stub for the service URL : " + serviceUrl);
             resourceStub = new ResourceAdminServiceStub(serviceUrl);
             // Create properties stub.
-            serviceUrl = new URL(baseUrl, configs.getProperty(Constants.PROPERTIES_SERVICE_PATH)).toString();
+            serviceUrl = new URL(baseUrl, Constants.PROPERTIES_SERVICE_PATH).toString();
             log.info("Creating registry properties admin service stub for the service URL : " + serviceUrl);
             propertiesStub = new PropertiesAdminServiceStub(serviceUrl);
 
@@ -98,10 +98,11 @@ public class PermissionCreator {
      * @throws RemoteException
      * @throws ResourceAdminServiceExceptionException
      */
-    private void createCollection(String collectionName, String parentPath, String description)
+    private void createCollection(String collectionName, String parentPath, String mediaType, String description)
             throws RemoteException, ResourceAdminServiceExceptionException {
-        log.info("Creating registry collection, name : " + collectionName + " parentPath : " + parentPath + " description : " + description);
-        resourceStub.addCollection(parentPath, collectionName, null, description);
+        log.info("Creating registry collection, name : " + collectionName +
+                " parentPath : " + parentPath + " mediaType : " + mediaType + " description : " + description);
+        resourceStub.addCollection(parentPath, collectionName, mediaType, description);
     }
 
     /**
@@ -112,10 +113,12 @@ public class PermissionCreator {
         log.info("Started creating permissions in the Identity Server.");
         for (DTO permission : permissions) {
             try {
-                createCollection(permission.getCollectionName(), permission.getCollectionParentPath(), permission.getCollectionDescription());
+                createCollection(permission.getCollectionName(), permission.getCollectionParentPath(),
+                        permission.getCollectionMediaType(), permission.getCollectionDescription());
                 createProperty(permission.getPropertyPath(), permission.getPropertyName(), permission.getPropertyValue());
             }catch (RemoteException | ResourceAdminServiceExceptionException | PropertiesAdminServiceRegistryExceptionException e){
-                log.error("Error while creating permission. Collection name : " + permission.getCollectionName() + " Property value : " + permission.getPropertyValue());
+                log.error("Error while creating permission. Collection name : "
+                        + permission.getCollectionName() + " Property value : " + permission.getPropertyValue(), e);
             }
         }
         log.info("Finished creating permission in the identity Server.");

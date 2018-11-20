@@ -22,6 +22,7 @@ public class DTO {
     // Registry collection attributes
     private String collectionName;
     private String collectionParentPath;
+    private String collectionMediaType;
     private String collectionDescription;
 
     // Registry property attributes
@@ -39,6 +40,14 @@ public class DTO {
 
     public String getCollectionParentPath() {
         return collectionParentPath;
+    }
+
+    public String getCollectionMediaType() {
+        return collectionMediaType;
+    }
+
+    public void setCollectionMediaType(String collectionMediaType) {
+        this.collectionMediaType = collectionMediaType;
     }
 
     public void setCollectionParentPath(String collectionParentPath) {
