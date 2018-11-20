@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.wso2.carbon.authenticator.stub.LoginAuthenticationExceptionException;
 import org.wso2.permission.client.util.AuthenticationServiceClient;
+import org.wso2.permission.client.util.DTOPopulator;
 import org.wso2.permission.client.util.PropertyReader;
 
 import java.io.IOException;
@@ -13,10 +14,6 @@ import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.Properties;
 
-/**
- * Hello world!
- *
- */
 public class Invoker {
     private static final Logger log = Logger.getLogger(Invoker.class);
     private static Properties configs;
@@ -40,7 +37,15 @@ public class Invoker {
             throw e;
         }
 
-
+        // Create permissions
+        if(cookie != null) {
+            DTOPopulator dtoPopulator = new DTOPopulator(configs);
+            PermissionCreator permissionCreator = new PermissionCreator(cookie, configs);
+            permissionCreator.createPermissions(dtoPopulator.getPermissions());
+        } else {
+            log.error("Authentication failure. Aborting process.");
+            System.exit(1);
+        }
     }
 
     /**

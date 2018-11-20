@@ -84,7 +84,7 @@ public class PermissionCreator {
      * @throws PropertiesAdminServiceRegistryExceptionException
      * @throws RemoteException
      */
-    public void createProperty(String path, String name, String value) throws PropertiesAdminServiceRegistryExceptionException, RemoteException {
+    private void createProperty(String path, String name, String value) throws PropertiesAdminServiceRegistryExceptionException, RemoteException {
         log.info("Creating registry property, name : " + name + " path : " + path + " value : " + value);
         propertiesStub.setProperty(path, name, value);
 
@@ -98,11 +98,10 @@ public class PermissionCreator {
      * @throws RemoteException
      * @throws ResourceAdminServiceExceptionException
      */
-    public void createCollection(String collectionName, String parentPath, String description)
+    private void createCollection(String collectionName, String parentPath, String description)
             throws RemoteException, ResourceAdminServiceExceptionException {
         log.info("Creating registry collection, name : " + collectionName + " parentPath : " + parentPath + " description : " + description);
-        String response = resourceStub.addCollection(parentPath, collectionName, null, description);
-        log.info("createCollection service response : " + response);
+        resourceStub.addCollection(parentPath, collectionName, null, description);
     }
 
     /**

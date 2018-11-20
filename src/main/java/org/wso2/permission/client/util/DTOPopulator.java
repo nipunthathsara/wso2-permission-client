@@ -46,6 +46,7 @@ public class DTOPopulator {
 
     /**
      * Read and parse permissions CSV file.
+     *
      * @param configs
      * @throws IOException
      */
@@ -67,12 +68,13 @@ public class DTOPopulator {
 
     /**
      * Populates and returns the permission DTOs.
+     *
      * @return
      */
     public ArrayList<DTO> getPermissions() {
         log.info("Started populating permissions DTOs.");
         DTO permission;
-        // Iterate through evry record of CSV file and populate DTOs.
+        // Iterate through each record of the CSV file and populate DTOs.
         if (csvRecords != null) {
             for (int i = 0; i < csvRecords.size(); i++) {
                 CSVRecord record = csvRecords.get(i);
